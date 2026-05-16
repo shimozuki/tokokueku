@@ -66,8 +66,8 @@
                                 </h3>
 
                                 <p class="text-gray-500 leading-relaxed">
-                                    Jl. Bakery Sweet No. 123 <br>
-                                    Jakarta, Indonesia
+                                    Jl. Bungkarno Lintas Sernu Kerato <br>
+                                    West Nusa Tenggara, Indonesia
                                 </p>
 
                             </div>

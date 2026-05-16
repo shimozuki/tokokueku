@@ -273,8 +273,8 @@
                             </div>
 
                             <div>
-                                Jl. Bakery No. 123 <br>
-                                Jakarta, Indonesia
+                                Jl. Bungkarno Lintas Sernu Kerato <br>
+                                West Nusa Tenggara, Indonesia
                             </div>
 
                         </div>
