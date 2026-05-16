@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 use App\Models\OrderItem;
-use App\Models\Product;
 
-use MoonShine\Fields\Text;
-use MoonShine\Fields\Number;
-use MoonShine\Fields\Select;
+use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\Image;
 
-use MoonShine\Resources\ModelResource;
+use MoonShine\Pages\Crud\IndexPage;
+use MoonShine\Pages\Crud\DetailPage;
+use MoonShine\Pages\Crud\FormPage;
+
+use MoonShine\Laravel\Resources\ModelResource;
 
 class OrderItemResource extends ModelResource
 {
@@ -19,32 +21,38 @@ class OrderItemResource extends ModelResource
 
     protected string $title = 'Order Items';
 
+
     public function fields(): array
     {
         return [
 
-            Select::make('Product', 'product_id')
-                ->options(
-                    Product::query()
-                        ->pluck('name', 'id')
-                        ->toArray()
+            Image::make('Gambar', 'product.image')
+                ->disk('public'),
+
+            Text::make('Produk')
+                ->changeFill(
+                    fn($item) =>
+                    $item->product?->name
                 ),
 
-            Number::make('Quantity', 'quantity'),
+            Text::make('Qty', 'quantity'),
 
-            Number::make('Price', 'price'),
+            Text::make('Harga')
+                ->changeFill(
+                    fn($item) =>
+                    'Rp ' . number_format($item->price, 0, ',', '.')
+                ),
 
-            Number::make('Subtotal', 'subtotal'),
+            Text::make('Subtotal')
+                ->changeFill(
+                    fn($item) =>
+                    'Rp ' . number_format($item->subtotal, 0, ',', '.')
+                ),
         ];
     }
 
     public function rules(mixed $item): array
     {
-        return [
-            'product_id' => ['required'],
-            'quantity' => ['required'],
-            'price' => ['required'],
-            'subtotal' => ['required'],
-        ];
+        return [];
     }
 }

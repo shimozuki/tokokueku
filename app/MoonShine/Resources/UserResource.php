@@ -6,30 +6,41 @@ namespace App\MoonShine\Resources;
 
 use App\Models\User;
 use Illuminate\Validation\Rule;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Password;
-use MoonShine\Fields\Select;
-use MoonShine\Fields\Text;
-use MoonShine\Resources\ModelResource;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Password;
+use MoonShine\UI\Fields\Select;
+use MoonShine\UI\Fields\Text;
+use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\Attributes\Icon;
 
+#[Icon('users')]
 class UserResource extends ModelResource
 {
     protected string $model = User::class;
 
     protected string $title = 'Users';
 
-    public function fields(): array
+    protected function indexFields(): iterable
     {
         return [
-
-            ID::make()->hideOnIndex(),
 
             Text::make('Name', 'name'),
 
             Text::make('Email', 'email'),
 
-            Password::make('Password', 'password')
-                ->hideOnIndex(),
+            Text::make('Role', 'role'),
+        ];
+    }
+
+    protected function formFields(): iterable
+    {
+        return [
+
+            Text::make('Name', 'name'),
+
+            Text::make('Email', 'email'),
+
+            Password::make('Password', 'password'),
 
             Select::make('Role', 'role')
                 ->options([

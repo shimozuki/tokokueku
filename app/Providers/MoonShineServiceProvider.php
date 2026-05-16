@@ -5,88 +5,43 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\MoonShine\Resources\CategoryResource;
+use Illuminate\Support\ServiceProvider;
+use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
+use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
+use MoonShine\Laravel\DependencyInjection\MoonShine;
+use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
+use App\MoonShine\Resources\MoonShineUserResource;
+use App\MoonShine\Resources\MoonShineUserRoleResource;
 use App\MoonShine\Resources\OrderResource;
 use App\MoonShine\Resources\ProductResource;
 use App\MoonShine\Resources\UserResource;
-use MoonShine\Providers\MoonShineApplicationServiceProvider;
-use MoonShine\MoonShine;
-use MoonShine\Menu\MenuGroup;
-use MoonShine\Menu\MenuItem;
-use MoonShine\Contracts\Resources\ResourceContract;
-use MoonShine\Menu\MenuElement;
-use MoonShine\Pages\Page;
-use Closure;
+use App\MoonShine\Resources\ReportResource;
+use App\MoonShine\Pages\ReportIndexPage;
 
-class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
+class MoonShineServiceProvider extends ServiceProvider
 {
     /**
-     * @return list<ResourceContract>
+     * @param  MoonShine  $core
+     * @param  MoonShineConfigurator  $config
+     *
      */
-    protected function resources(): array
+    public function boot(CoreContract $core, ConfiguratorContract $config): void
     {
-        return [];
-    }
+        // $config->authEnable();
 
-    /**
-     * @return list<Page>
-     */
-    protected function pages(): array
-    {
-        return [];
-    }
+        $core->resources([
 
-    /**
-     * @return Closure|list<MenuElement>
-     */
-    protected function menu(): array
-    {
-        return [
-            MenuItem::make('Dashboard', '/admin'),
+            CategoryResource::class,
+            ProductResource::class,
+            OrderResource::class,
+            UserResource::class,
 
-
-            MenuGroup::make('Product', [
-
-                MenuItem::make(
-                    'Categories',
-                    new CategoryResource()
-                ),
-
-                MenuItem::make(
-                    'Products',
-                    new ProductResource()
-                ),
-
-            ]),
-
-            MenuGroup::make('Transactions', [
-
-                MenuItem::make(
-                    'Orders',
-                    new OrderResource()
-                ),
-
-            ]),
-
-
-            MenuItem::make('Users', new UserResource()),
-        ];
-    }
-
-    protected function middleware(): array
-    {
-        return [
-            'web',
-            'auth',
-            'moonshine',
-            'moonshine.role',
-        ];
-    }
-
-    /**
-     * @return Closure|array{css: string, colors: array, darkColors: array}
-     */
-    protected function theme(): array
-    {
-        return [];
+            ReportResource::class,
+            ])
+            ->pages([
+                ...$config->getPages(),
+                ReportIndexPage::class,
+            ])
+        ;
     }
 }

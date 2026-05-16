@@ -176,15 +176,217 @@
                 </div>
 
                 <!-- button -->
-                <div class="flex gap-5 mt-8">
+                <div x-data="{ openOrder: false }">
 
                     <!-- order -->
+                    @if(auth('moonshine')->check())
+
                     <button
+                        type="button"
+                        @click="openOrder = true"
                         class="bg-gradient-to-r from-pink-500 to-[#a44c63] text-white px-10 py-5 rounded-full shadow-lg hover:shadow-2xl hover:-translate-y-1 transition font-semibold text-lg">
 
                         🎂 Pesan Sekarang
 
                     </button>
+
+                    <!-- MODAL -->
+                    <div
+                        x-show="openOrder"
+                        x-transition
+                        x-cloak
+                        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-5">
+
+                        <!-- CONTENT -->
+                        <div
+                            @click.away="openOrder = false"
+                            class="bg-white rounded-[40px] w-full max-w-2xl shadow-2xl overflow-hidden">
+
+                            <!-- HEADER -->
+                            <div class="bg-gradient-to-r from-pink-500 to-[#a44c63] p-8 text-white relative">
+
+                                <button
+                                    type="button"
+                                    @click="openOrder = false"
+                                    class="absolute top-5 right-5 text-3xl hover:rotate-90 transition">
+
+                                    ×
+
+                                </button>
+
+                                <h2 class="text-4xl font-bold mb-2">
+
+                                    Order Cake 🎂
+
+                                </h2>
+
+                                <p class="text-pink-100">
+
+                                    Lengkapi data pesanan Anda
+
+                                </p>
+
+                            </div>
+
+                            <!-- BODY -->
+                            <div class="p-8">
+
+                                <form
+                                    action="{{ route('order.store') }}"
+                                    method="POST"
+                                    class="space-y-6">
+
+                                    @csrf
+
+                                    <!-- hidden -->
+                                    <input
+                                        type="hidden"
+                                        name="product_id"
+                                        value="{{ $product->id }}">
+
+
+                                    <input
+                                        type="hidden"
+                                        name="total_price"
+                                        value="{{ $product->price }}">
+
+                                    <input
+                                        type="hidden"
+                                        name="latitude"
+                                        id="latitude">
+
+                                    <input
+                                        type="hidden"
+                                        name="longitude"
+                                        id="longitude">
+
+                                    <!-- PRODUCT -->
+                                    <div class="flex items-center gap-5 bg-pink-50 rounded-3xl p-5">
+
+                                        <img
+                                            src="{{ asset('storage/' . $product->image) }}"
+                                            class="w-24 h-24 rounded-2xl object-cover">
+
+                                        <div>
+
+                                            <h3 class="text-2xl font-bold text-[#5b2d2d]">
+
+                                                {{ $product->name }}
+
+                                            </h3>
+
+                                            <div class="text-pink-500 font-semibold text-xl mt-2">
+
+                                                Rp {{ number_format($product->price, 0, ',', '.') }}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- PICKUP -->
+                                    <div>
+
+                                        <label class="block mb-3 font-semibold text-[#5b2d2d]">
+
+                                            Tanggal Ambil
+
+                                        </label>
+
+                                        <input
+                                            type="date"
+                                            name="pickup_date"
+                                            required
+                                            class="w-full rounded-2xl border border-pink-100 p-4 focus:border-pink-400 focus:ring-pink-300">
+
+                                    </div>
+
+                                    <!-- NOTES -->
+                                    <div>
+
+                                        <label class="block mb-3 font-semibold text-[#5b2d2d]">
+
+                                            Catatan Tambahan
+
+                                        </label>
+
+                                        <textarea
+                                            name="notes"
+                                            rows="4"
+                                            placeholder="Contoh: tambah lilin, tulisan Happy Birthday..."
+                                            class="w-full rounded-2xl border border-pink-100 p-4 focus:border-pink-400 focus:ring-pink-300 resize-none"></textarea>
+
+                                    </div>
+
+                                    <!-- PAYMENT METHOD -->
+                                    <div>
+
+                                        <label class="block mb-3 font-semibold text-[#5b2d2d]">
+
+                                            Metode Pembayaran
+
+                                        </label>
+
+                                        <div class="space-y-3">
+
+                                            <label class="flex items-center gap-3 p-4 border rounded-2xl cursor-pointer">
+
+                                                <input
+                                                    type="radio"
+                                                    name="payment_method"
+                                                    value="cod"
+                                                    required>
+
+                                                <span>COD (Bayar di Tempat)</span>
+
+                                            </label>
+
+                                            <label class="flex items-center gap-3 p-4 border rounded-2xl cursor-pointer">
+
+                                                <input
+                                                    type="radio"
+                                                    name="payment_method"
+                                                    value="qris"
+                                                    required>
+
+                                                <span>QRIS</span>
+
+                                            </label>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- SUBMIT -->
+                                    <button
+                                        type="submit"
+                                        class="w-full bg-gradient-to-r from-pink-500 to-[#a44c63] text-white py-5 rounded-full font-semibold text-lg shadow-lg hover:shadow-2xl hover:-translate-y-1 transition">
+
+                                        🎂 Konfirmasi Pesanan
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    @else
+
+                    <a href="/admin/login"
+                        class="inline-block bg-gradient-to-r from-pink-500 to-[#a44c63] text-white px-10 py-5 rounded-full shadow-lg hover:shadow-2xl hover:-translate-y-1 transition font-semibold text-lg">
+
+                        🔐 Login Untuk Pesan
+
+                    </a>
+
+                    @endif
 
                     <!-- consultation -->
                     <a href="https://wa.me/628123456789"
@@ -281,5 +483,24 @@
     </div>
 
 </section>
+
+
+
+<!-- GEOLOCATION -->
+<script>
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            document.getElementById('latitude').value =
+                position.coords.latitude;
+
+            document.getElementById('longitude').value =
+                position.coords.longitude;
+
+        }
+
+    );
+</script>
 
 @endsection
