@@ -9,42 +9,80 @@ use App\Models\Category;
 
 use Illuminate\Validation\Rule;
 
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Text;
-use MoonShine\Fields\Textarea;
-use MoonShine\Fields\Image;
-use MoonShine\Fields\Number;
-use MoonShine\Fields\Switcher;
-use MoonShine\Fields\Select;
+use MoonShine\Laravel\Resources\ModelResource;
 
-use MoonShine\Resources\ModelResource;
+use MoonShine\Support\Attributes\Icon;
 
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\Textarea;
+use MoonShine\UI\Fields\Image;
+use MoonShine\UI\Fields\Number;
+use MoonShine\UI\Fields\Switcher;
+use MoonShine\UI\Fields\Select;
+
+#[Icon('shopping-bag')]
 class ProductResource extends ModelResource
 {
     protected string $model = Product::class;
 
-    protected string $title = 'Products';
+    protected string $column = 'name';
 
-    public function fields(): array
+    public function getTitle(): string
+    {
+        return 'Products';
+    }
+
+    protected function indexFields(): iterable
     {
         return [
-            ID::make()->hideOnIndex(),
+
+            Text::make('No')
+                ->changeFill(
+                    fn($item) => $item->getKey()
+                ),
+
+            Text::make('Name', 'name'),
+
+            Text::make(
+                'Price',
+                'price',
+                fn($item) =>
+                'Rp ' . number_format($item->price, 0, ',', '.')
+            ),
+
+            Number::make('Stock', 'stock'),
+
+            Switcher::make('Status', 'status'),
+
+            Image::make('Image', 'image')
+                ->disk('public')
+                ->dir('products'),
+        ];
+    }
+
+    protected function formFields(): iterable
+    {
+        return [
+
             Select::make('Category', 'category_id')
                 ->options(
                     Category::query()
                         ->pluck('name', 'id')
                         ->toArray()
-                ),
+                )
+                ->required(),
 
-            Text::make('Name', 'name'),
+            Text::make('Name', 'name')
+                ->required(),
 
             Textarea::make('Description', 'description'),
 
-            Text::make('Price', 'price', function ($item) {
-                return 'Rp ' . number_format($item->price, 0, ',', '.');
-            }),
+            Number::make('Price', 'price')
+                ->required(),
 
-            Number::make('Stock', 'stock'),
+            Number::make('Stock', 'stock')
+                ->required(),
 
             Image::make('Image', 'image')
                 ->dir('products'),
@@ -53,26 +91,26 @@ class ProductResource extends ModelResource
         ];
     }
 
-    public function rules(mixed $item): array
+    protected function detailFields(): iterable
+    {
+        return $this->indexFields();
+    }
+
+    protected function rules($item): array
     {
         return [
+
             'category_id' => ['required'],
 
             'name' => [
                 'required',
-                'string',
-                Rule::unique('products', 'name')->ignore($item?->id),
+                Rule::unique('products', 'name')
+                    ->ignore($item?->id),
             ],
 
-            'description' => ['nullable'],
+            'price' => ['required'],
 
-            'price' => ['required', 'numeric'],
-
-            'stock' => ['required', 'integer'],
-
-            'image' => ['nullable'],
-
-            'status' => ['nullable'],
+            'stock' => ['required'],
         ];
     }
 }

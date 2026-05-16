@@ -18,7 +18,12 @@
             font-family: 'Poppins', sans-serif;
             background: #fff8f6;
         }
+
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="text-[#5b2d2d] overflow-x-hidden">

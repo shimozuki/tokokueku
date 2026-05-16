@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\ProductController;
+use App\Http\Controllers\Frontend\OrderController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +36,16 @@ Route::get('/contact', function () {
 Route::get('/order', function () {
     return view('frontend.order');
 })->name('order');
+
+Route::middleware('auth:moonshine')->group(function () {
+
+    Route::post(
+        '/order/store',
+        [OrderController::class, 'store']
+    )->name('order.store');
+});
+
+Route::get(
+    '/export-sales',
+    [ExportController::class, 'sales']
+);
