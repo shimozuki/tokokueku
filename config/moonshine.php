@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminRoleMiddleware;
 use App\MoonShine\Layouts\MoonShineLayout;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -51,6 +52,7 @@ return [
         VerifyCsrfToken::class,
         SubstituteBindings::class,
         ChangeLocale::class,
+        AdminRoleMiddleware::class,
     ],
 
     // Storage

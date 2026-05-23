@@ -113,9 +113,7 @@
 
             </a>
 
-            @if(auth('moonshine')->check())
-
-            @if(auth('moonshine')->check())
+            @if(Auth::guard('moonshine')->check())
 
             @php
 
@@ -308,7 +306,6 @@
 
             </div>
 
-            @endif
 
 
             <!-- logout -->

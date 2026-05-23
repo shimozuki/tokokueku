@@ -53,7 +53,7 @@ final class MoonShineLayout extends AppLayout
 
     protected function menu(): array
     {
-        return [
+        $menu = [
 
             MenuGroup::make('Products', [
 
@@ -82,9 +82,29 @@ final class MoonShineLayout extends AppLayout
                 'Users',
                 UserResource::class
             ),
-
-            MenuItem::make('Reports', ReportResource::class),
         ];
+
+        /*
+    |--------------------------------------------------------------------------
+    | Khusus Kepala Toko
+    |--------------------------------------------------------------------------
+    */
+
+        if (
+
+            auth('moonshine')->user()?->role === 'kepala_toko'
+
+        ) {
+
+            $menu[] = MenuItem::make(
+
+                'Reports',
+
+                ReportResource::class
+            );
+        }
+
+        return $menu;
     }
 
     /**

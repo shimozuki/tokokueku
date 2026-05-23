@@ -82,6 +82,9 @@ Route::middleware('auth:moonshine')->group(function () {
 });
 
 Route::get(
+
     '/export-sales',
+
     [ExportController::class, 'sales']
-);
+
+)->name('export.sales');
