@@ -83,34 +83,268 @@
         <div class="hidden md:flex items-center gap-4">
 
             <!-- cart -->
-            <button
-                class="w-14 h-14 rounded-full bg-white border border-pink-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition flex items-center justify-center text-2xl">
+            <a
+                href="{{ route('my.orders') }}"
+                class="relative group">
 
-                👜
+                <div
+                    class="w-14 h-14 rounded-full bg-white border border-pink-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition flex items-center justify-center text-2xl">
 
-            </button>
+                    👜
+
+                </div>
+
+                {{-- Tooltip --}}
+                <div
+                    class="absolute left-1/2 -translate-x-1/2 top-16
+        opacity-0 group-hover:opacity-100
+        transition duration-300
+        bg-[#5c2c22]
+        text-white
+        text-sm
+        px-4 py-2
+        rounded-full
+        whitespace-nowrap
+        shadow-lg">
+
+                    Pesanan Saya
+
+                </div>
+
+            </a>
 
             @if(auth('moonshine')->check())
 
-            <!-- avatar -->
-            <div
-                class="w-14 h-14 rounded-full bg-gradient-to-r from-pink-500 to-[#a44c63] text-white flex items-center justify-center shadow-md font-bold text-2xl">
+            @if(auth('moonshine')->check())
 
-                {{ strtoupper(substr(auth('moonshine')->user()->name, 0, 1)) }}
+            @php
+
+            $latestNotification = auth('moonshine')
+            ->user()
+            ->unreadNotifications
+            ->first();
+
+            @endphp
+
+            {{-- ICON NOTIFICATION --}}
+            <div x-data="{ openNotif: false }" class="relative">
+
+                {{-- BUTTON LONCENG --}}
+                <button
+                    @click="openNotif = !openNotif"
+                    class="relative group">
+
+                    <div
+                        class="w-14 h-14 rounded-full bg-white border border-pink-100
+            shadow-md hover:shadow-xl hover:-translate-y-1
+            transition flex items-center justify-center text-2xl">
+
+                        🔔
+
+                    </div>
+
+                    {{-- BADGE --}}
+                    @if(auth('moonshine')->user()->unreadNotifications->count() > 0)
+
+                    <div
+                        class="absolute -top-2 -right-2
+                w-6 h-6 rounded-full bg-red-500
+                text-white text-xs font-bold
+                flex items-center justify-center
+                border-2 border-white">
+
+                        {{
+    auth('moonshine')
+        ->user()
+        ->unreadNotifications
+        ->where(
+            'type',
+            'App\\Notifications\\OrderStatusNotification'
+        )
+        ->count()
+}}
+
+                    </div>
+
+                    @endif
+
+                    {{-- TOOLTIP --}}
+                    <div
+                        class="absolute left-1/2 -translate-x-1/2 top-16
+            opacity-0 group-hover:opacity-100
+            transition duration-300
+            bg-[#5c2c22]
+            text-white text-sm px-4 py-2
+            rounded-full whitespace-nowrap shadow-lg">
+
+                        Notifikasi
+
+                    </div>
+
+                </button>
+
+                {{-- MODAL NOTIFICATION --}}
+                <div
+                    x-show="openNotif"
+                    @click.away="openNotif = false"
+                    x-transition
+                    class="absolute right-0 mt-5 w-[380px] z-50">
+
+                    <div
+                        class="bg-white rounded-3xl shadow-2xl
+            border border-pink-100 overflow-hidden">
+
+                        {{-- HEADER --}}
+                        <div
+                            class="bg-gradient-to-r from-pink-500 to-[#a44c63]
+                p-5 text-white flex items-center justify-between">
+
+                            <div class="flex items-center gap-3">
+
+                                <div class="text-3xl">
+                                    🔔
+                                </div>
+
+                                <h3 class="font-bold text-lg">
+
+                                    Notifikasi
+
+                                </h3>
+
+                            </div>
+
+                            <button
+                                @click="openNotif = false"
+                                class="text-white text-2xl">
+
+                                ✕
+
+                            </button>
+
+                        </div>
+
+                        {{-- BODY --}}
+                        <div class="max-h-[400px] overflow-y-auto">
+
+                            @forelse(
+
+                            auth('moonshine')
+                            ->user()
+                            ->unreadNotifications
+                            ->where('type', 'App\\Notifications\\OrderStatusNotification')
+
+                            as $notification
+                            )
+
+                            <div
+                                class="p-5 border-b border-pink-50 hover:bg-pink-50 transition">
+
+                                <h4 class="font-bold text-[#5c2c22] mb-2">
+
+                                    {{ $notification->data['title'] }}
+
+                                </h4>
+
+                                <p class="text-gray-600 text-sm leading-relaxed">
+
+                                    {{ $notification->data['message'] }}
+
+                                </p>
+
+                                <div class="mt-4">
+
+                                    <form
+                                        method="POST"
+                                        action="/notification/read/{{ $notification->id }}">
+
+                                        @csrf
+
+                                        <button
+                                            class="bg-[#d94f70]
+        hover:bg-[#b93c5a]
+        text-white text-sm
+        px-4 py-2 rounded-full
+        transition duration-300">
+
+                                            Tandai Dibaca
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                            @empty
+
+                            <div class="p-10 text-center">
+
+                                <div class="text-5xl mb-4">
+                                    🔔
+                                </div>
+
+                                <h3 class="text-xl font-bold text-[#5c2c22] mb-2">
+
+                                    Tidak Ada Notifikasi
+
+                                </h3>
+
+                                <p class="text-gray-500 text-sm">
+
+                                    Semua update pesanan akan muncul di sini 😄
+
+                                </p>
+
+                            </div>
+
+                            @endforelse
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
+            @endif
+
+
             <!-- logout -->
-            <form method="POST" action="/admin/logout">
+            <form
+                method="POST"
+                action="/admin/logout"
+                class="relative group">
 
                 @csrf
 
                 <button
-                    class="w-14 h-14 rounded-full bg-white border border-pink-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition flex items-center justify-center text-2xl">
+                    class="w-14 h-14 rounded-full bg-white border border-pink-100 shadow-md
+        hover:shadow-xl hover:-translate-y-1 transition duration-300
+        flex items-center justify-center text-2xl">
 
                     📤
 
                 </button>
+
+                {{-- Tooltip --}}
+                <div
+                    class="absolute left-1/2 -translate-x-1/2 top-16
+        opacity-0 group-hover:opacity-100
+        transition duration-300
+        bg-[#5c2c22]
+        text-white
+        text-sm
+        px-4 py-2
+        rounded-full
+        whitespace-nowrap
+        shadow-lg
+        z-50">
+
+                    Logout
+
+                </div>
 
             </form>
 
@@ -338,6 +572,7 @@
 
     </footer>
 
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 
 </html>

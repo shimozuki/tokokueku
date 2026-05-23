@@ -23,6 +23,7 @@ use MoonShine\UI\Fields\Select as FieldsSelect;
 use MoonShine\UI\Fields\Text as FieldsText;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Attributes\Icon;
+use App\Notifications\OrderStatusNotification;
 
 #[Icon('shopping-cart')]
 class OrderResource extends ModelResource
@@ -241,5 +242,16 @@ class OrderResource extends ModelResource
                     'transfer' => 'Transfer',
                 ]),
         ];
+    }
+
+    protected function afterUpdated(mixed $item): mixed
+    {
+        $item->user->notify(
+
+            new OrderStatusNotification($item)
+
+        );
+
+        return $item;
     }
 }

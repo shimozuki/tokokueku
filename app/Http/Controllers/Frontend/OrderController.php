@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Notifications\NewOrderNotification;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -74,10 +75,81 @@ class OrderController extends Controller
         }
 
         return redirect()
-            ->back()
-            ->with(
-                'success',
-                'Pesanan berhasil dibuat 😄'
-            );
+            ->route('my.orders');
+    }
+
+    public function myOrders()
+    {
+        $orders = Order::where(
+            'user_id',
+            auth()->id()
+        )->latest()->paginate(5);
+
+        return view(
+            'frontend.orders.index',
+            compact('orders')
+        );
+    }
+
+    public function show($id)
+    {
+        $order = Order::join(
+            'products',
+            'orders.product_id',
+            '=',
+            'products.id'
+        )
+
+            ->join(
+                'users',
+                'orders.user_id',
+                '=',
+                'users.id'
+            )
+
+            ->select(
+
+                'orders.*',
+
+                'products.name as product_name',
+
+                'products.description as product_description',
+
+                'products.image as product_image',
+
+                'users.name as customer_name'
+            )
+
+            ->where(
+                'orders.user_id',
+                auth()->id()
+            )
+
+            ->where(
+                'orders.id',
+                $id
+            )
+
+            ->firstOrFail();
+
+        return view(
+            'frontend.orders.show',
+            compact('order')
+        );
+    }
+
+    public function invoice($id)
+    {
+        $order = Order::with('items.product', 'user')
+            ->findOrFail($id);
+
+        $pdf = Pdf::loadView(
+            'frontend.orders.invoice',
+            compact('order')
+        );
+
+        return $pdf->download(
+            'invoice-' . $order->invoice_number . '.pdf'
+        );
     }
 }

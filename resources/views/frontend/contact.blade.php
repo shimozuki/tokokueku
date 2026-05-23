@@ -289,12 +289,13 @@
 
             <!-- maps -->
             <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126920.0301179494!2d106.71828825!3d-6.229728!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e5c0c4f0c5%3A0x301576d14feb9c0!2sJakarta!5e0!3m2!1sen!2sid!4v1700000000000!5m2!1sen!2sid"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3946.1574026560716!2d117.40346029999999!3d-8.484071899999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dcbedfe360cb309%3A0x156c5be0035d733c!2sRofa%20Cake&#39;s!5e0!3m2!1sid!2sid!4v1779527452987!5m2!1sid!2sid"
                 width="100%"
                 height="500"
                 style="border:0;"
                 allowfullscreen=""
-                loading="lazy">
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
             </iframe>
 
         </div>

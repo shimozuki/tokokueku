@@ -43,6 +43,42 @@ Route::middleware('auth:moonshine')->group(function () {
         '/order/store',
         [OrderController::class, 'store']
     )->name('order.store');
+
+    Route::get(
+        '/my-orders',
+        [OrderController::class, 'myOrders']
+    )->name('my.orders');
+
+    Route::get(
+        '/my-orders/{id}',
+        [OrderController::class, 'show']
+    )->name('orders.show');
+
+    Route::post(
+
+        '/notification/read/{id}',
+
+        function ($id) {
+
+            $notification = auth('moonshine')
+                ->user()
+                ->notifications()
+                ->find($id);
+
+            if ($notification) {
+
+                $notification->markAsRead();
+            }
+
+            return back();
+        }
+
+    )->name('notification.read');
+
+    Route::get(
+        '/orders/{id}/invoice',
+        [OrderController::class, 'invoice']
+    )->name('orders.invoice');
 });
 
 Route::get(
