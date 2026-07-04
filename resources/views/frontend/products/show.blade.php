@@ -200,7 +200,7 @@
                         <!-- CONTENT -->
                         <div
                             @click.away="openOrder = false"
-                            class="bg-white rounded-[40px] w-full max-w-2xl shadow-2xl overflow-hidden">
+                            class="bg-white rounded-[40px] w-full max-w-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
 
                             <!-- HEADER -->
                             <div class="bg-gradient-to-r from-pink-500 to-[#a44c63] p-8 text-white relative">
@@ -229,7 +229,7 @@
                             </div>
 
                             <!-- BODY -->
-                            <div class="p-8">
+                            <div class="p-8 overflow-y-auto flex-1">
 
                                 <form
                                     action="{{ route('order.store') }}"

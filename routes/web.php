@@ -5,7 +5,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\OrderController;
-
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ Route::get('/order', function () {
     return view('frontend.order');
 })->name('order');
 
-Route::middleware('auth:moonshine')->group(function () {
+Route::middleware('auth')->group(function () {
 
     Route::post(
         '/order/store',
@@ -60,7 +60,7 @@ Route::middleware('auth:moonshine')->group(function () {
 
         function ($id) {
 
-            $notification = auth('moonshine')
+            $notification = auth()
                 ->user()
                 ->notifications()
                 ->find($id);
@@ -81,6 +81,17 @@ Route::middleware('auth:moonshine')->group(function () {
     )->name('orders.invoice');
 });
 
+Route::get('/logout', function () {
+
+    Auth::logout();
+
+    request()->session()->invalidate();
+
+    request()->session()->regenerateToken();
+
+    return redirect('/');
+})->name('logout');
+
 Route::get(
 
     '/export-sales',
@@ -88,3 +99,5 @@ Route::get(
     [ExportController::class, 'sales']
 
 )->name('export.sales');
+
+require __DIR__ . '/auth.php';

@@ -309,21 +309,14 @@
 
 
             <!-- logout -->
-            <form
-                method="POST"
-                action="/admin/logout"
-                class="relative group">
+            <a
+                href="{{ route('logout') }}"
+                class="relative group
+    w-14 h-14 rounded-full bg-white border border-pink-100 shadow-md
+    hover:shadow-xl hover:-translate-y-1 transition duration-300
+    flex items-center justify-center text-2xl">
 
-                @csrf
-
-                <button
-                    class="w-14 h-14 rounded-full bg-white border border-pink-100 shadow-md
-        hover:shadow-xl hover:-translate-y-1 transition duration-300
-        flex items-center justify-center text-2xl">
-
-                    📤
-
-                </button>
+                📤
 
                 {{-- Tooltip --}}
                 <div
@@ -343,7 +336,7 @@
 
                 </div>
 
-            </form>
+            </a>
 
             @else
 

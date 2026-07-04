@@ -8,37 +8,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminRoleMiddleware
 {
-    public function handle(
-        Request $request,
-        Closure $next
-    ): Response {
-
+    public function handle(Request $request, Closure $next): Response
+    {
         $user = auth('moonshine')->user();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Belum login
-        |--------------------------------------------------------------------------
-        */
-
         if (!$user) {
-
             return $next($request);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Role pelanggan tidak boleh admin panel
-        |--------------------------------------------------------------------------
-        */
-
-        if (
-
-            $user->role === 'pelanggan'
-
-        ) {
-
-            abort(403);
+        if ($user->role === 'pelanggan') {
+            return redirect('/'); // ganti abort(403) jadi ini
         }
 
         return $next($request);
