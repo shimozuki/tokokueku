@@ -32,9 +32,9 @@ class ReportResource extends ModelResource
 
     public function canCreate(): bool
     {
+        dd('masuk');
         return false;
     }
-
     public function canEdit(): bool
     {
         return false;
@@ -44,6 +44,8 @@ class ReportResource extends ModelResource
     {
         return 'Laporan Keuangan';
     }
+
+
 
     /*
     |--------------------------------------------------------------------------

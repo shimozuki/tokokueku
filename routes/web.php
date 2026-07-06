@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,15 @@ Route::get('/contact', function () {
 Route::get('/order', function () {
     return view('frontend.order');
 })->name('order');
+
+Route::middleware('guest')->group(function () {
+
+    Route::get('/register', [RegisteredUserController::class, 'create'])
+        ->name('register');
+
+    Route::post('/register', [RegisteredUserController::class, 'store'])
+        ->name('register.store');
+});
 
 Route::middleware('auth:moonshine')->group(function () {
 
