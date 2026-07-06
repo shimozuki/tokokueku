@@ -113,7 +113,7 @@
 
             </a>
 
-            @if(Auth::guard('moonshine')->check())
+            @if(auth('moonshine')->check())
 
             @php
 

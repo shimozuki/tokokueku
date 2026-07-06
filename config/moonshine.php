@@ -22,9 +22,7 @@ use MoonShine\Laravel\Pages\LoginPage;
 use MoonShine\Laravel\Pages\ProfilePage;
 
 return [
-    'title' => env('MOONSHINE_TITLE', 'MoonShine'),
-    'logo' => 'vendor/moonshine/logo.svg',
-    'logo_small' => 'vendor/moonshine/logo-small.svg',
+    'title' => env('MOONSHINE_TITLE', 'Toko KueKu'),
 
 
     // Default flags

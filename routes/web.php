@@ -37,7 +37,7 @@ Route::get('/order', function () {
     return view('frontend.order');
 })->name('order');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth:moonshine')->group(function () {
 
     Route::post(
         '/order/store',

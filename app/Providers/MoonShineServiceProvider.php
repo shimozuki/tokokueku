@@ -25,12 +25,12 @@ class MoonShineServiceProvider extends ServiceProvider
         ConfiguratorContract $config
     ): void {
 
+        $config->title('🍰 TokoKueKu');
+
         Gate::define('moonshine', function ($user) {
 
             return in_array(
-
                 $user->role,
-
                 [
                     'admin',
                     'kepala_toko'
@@ -39,21 +39,13 @@ class MoonShineServiceProvider extends ServiceProvider
         });
 
         $core->resources([
-
             CategoryResource::class,
-
             ProductResource::class,
-
             OrderResource::class,
-
             UserResource::class,
-
             ReportResource::class,
-
         ])->pages([
-
             ...$config->getPages(),
-
             ReportIndexPage::class,
         ]);
     }
