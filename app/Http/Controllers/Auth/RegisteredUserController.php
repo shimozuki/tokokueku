@@ -43,8 +43,7 @@ class RegisteredUserController extends Controller
             'role' => 'pelanggan',
         ]);
 
-        return redirect()
-            ->route('/admin/login')
+        return redirect('/admin/login')
             ->with('success', 'Registrasi berhasil, silakan login.');
     }
 }

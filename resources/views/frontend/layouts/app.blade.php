@@ -341,18 +341,35 @@
             @else
 
             <!-- login -->
-            <a href="/admin/login"
-                class="h-14 px-6 rounded-full bg-white border border-pink-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition flex items-center gap-3">
+            <div class="flex items-center gap-4">
 
-                <span class="text-2xl">
-                    👤
-                </span>
+                <a href="/register"
+                    class="h-14 px-6 rounded-full bg-pink-500 text-white shadow-md hover:shadow-xl hover:-translate-y-1 transition flex items-center gap-3">
 
-                <span class="font-semibold text-[#5b2d2d]">
-                    Login
-                </span>
+                    <span class="text-2xl">
+                        📝
+                    </span>
 
-            </a>
+                    <span class="font-semibold">
+                        Register
+                    </span>
+
+                </a>
+
+                <a href="/admin/login"
+                    class="h-14 px-6 rounded-full bg-white border border-pink-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition flex items-center gap-3">
+
+                    <span class="text-2xl">
+                        👤
+                    </span>
+
+                    <span class="font-semibold text-[#5b2d2d]">
+                        Login
+                    </span>
+
+                </a>
+
+            </div>
 
             @endif
 
